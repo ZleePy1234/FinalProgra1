@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Eslepo\\Desktop\\etakl\\wawa\\wawa.csproj",
+      "projectUniqueName": "C:\\Users\\Eslepo\\Desktop\\FinalProgra1\\wawa\\wawa.csproj",
       "projectName": "wawa",
-      "projectPath": "C:\\Users\\Eslepo\\Desktop\\etakl\\wawa\\wawa.csproj",
+      "projectPath": "C:\\Users\\Eslepo\\Desktop\\FinalProgra1\\wawa\\wawa.csproj",
       "packagesPath": "C:\\Users\\Eslepo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Eslepo\\Desktop\\etakl\\wawa\\obj\\",
+      "outputPath": "C:\\Users\\Eslepo\\Desktop\\FinalProgra1\\wawa\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Eslepo\\AppData\\Roaming\\NuGet\\NuGet.Config",

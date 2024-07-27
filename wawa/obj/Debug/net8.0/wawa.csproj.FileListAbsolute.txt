@@ -1,0 +1,15 @@
+C:\Users\Eslepo\Desktop\FinalProgra1\wawa\obj\Debug\net8.0\wawa.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Eslepo\Desktop\FinalProgra1\wawa\obj\Debug\net8.0\wawa.AssemblyInfoInputs.cache
+C:\Users\Eslepo\Desktop\FinalProgra1\wawa\obj\Debug\net8.0\wawa.AssemblyInfo.cs
+C:\Users\Eslepo\Desktop\FinalProgra1\wawa\obj\Debug\net8.0\wawa.csproj.CoreCompileInputs.cache
+C:\Users\Eslepo\Desktop\FinalProgra1\wawa\obj\Debug\net8.0\wawa.sourcelink.json
+C:\Users\Eslepo\Desktop\FinalProgra1\wawa\bin\Debug\net8.0\wawa.exe
+C:\Users\Eslepo\Desktop\FinalProgra1\wawa\bin\Debug\net8.0\wawa.deps.json
+C:\Users\Eslepo\Desktop\FinalProgra1\wawa\bin\Debug\net8.0\wawa.runtimeconfig.json
+C:\Users\Eslepo\Desktop\FinalProgra1\wawa\bin\Debug\net8.0\wawa.dll
+C:\Users\Eslepo\Desktop\FinalProgra1\wawa\bin\Debug\net8.0\wawa.pdb
+C:\Users\Eslepo\Desktop\FinalProgra1\wawa\obj\Debug\net8.0\wawa.dll
+C:\Users\Eslepo\Desktop\FinalProgra1\wawa\obj\Debug\net8.0\refint\wawa.dll
+C:\Users\Eslepo\Desktop\FinalProgra1\wawa\obj\Debug\net8.0\wawa.pdb
+C:\Users\Eslepo\Desktop\FinalProgra1\wawa\obj\Debug\net8.0\wawa.genruntimeconfig.cache
+C:\Users\Eslepo\Desktop\FinalProgra1\wawa\obj\Debug\net8.0\ref\wawa.dll

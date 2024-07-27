@@ -1,8 +1,10 @@
 ﻿using System.Security.AccessControl;
-using Enemigos;
+using static Enemigos.CreacionEnemigos;
 using Loot;
 using Cuartos;
 using PlayerClass;
+using Enemigos;
+using System.Security.Cryptography.X509Certificates;
 
 namespace EjercicioComentarios
 {
@@ -14,7 +16,66 @@ namespace EjercicioComentarios
 
         static void Main(string[] args)
         {
+            /* DEBUG PARA VER SI FUNCIONA SELECCION ALEATORIA
+            Console.Clear();
+            ListaEnemigosAtaques();
             //Aqui llamaremos las demas acciones del juego, sin poner nada en el main mas que metodos
+            Random rnd = new Random();
+            int enemigoSeleccionado = rnd.Next(0, 2);
+            Console.WriteLine("El Numero Generado es "+ enemigoSeleccionado);
+            Console.WriteLine("Corresponde al siguiente Enemigo");
+            EnemyData CurrentEnemy = ListaEnemigos[enemigoSeleccionado];
+            Console.WriteLine("Nombre " + CurrentEnemy.enemyName);
+            Console.WriteLine("Vida " + CurrentEnemy.enemyHealth);
+            Console.WriteLine("Puntos " + CurrentEnemy.enemyPoints);
+            Console.WriteLine("ID " + CurrentEnemy.enemyID);
+            Console.WriteLine("El enemigo tiene los siguientes Ataques");
+            Console.WriteLine("");
+            int ataqueSeleccionado = rnd.Next(0, 3);
+            
+            if(CurrentEnemy.enemyID == 0)
+            {
+                EnemyAttackData CurrentAttack = AtaquesEsqueleto[ataqueSeleccionado];
+                for(int i = 0; i < AtaquesEsqueleto.Count; i++)
+                {
+                    Console.WriteLine("Nombre del Ataque " + AtaquesEsqueleto[i].attackName);
+                    Console.WriteLine("Daño del ataque " + AtaquesEsqueleto[i].attackDamage);
+                    Console.WriteLine("Bloqueo del Ataque " + AtaquesEsqueleto[i].attackBlock);
+                    Console.WriteLine("ID del Ataque " + AtaquesEsqueleto[i].attackID);
+                    Console.WriteLine("");
+                }
+                Console.WriteLine("");
+                Console.WriteLine("el ataque seleccionado aleatoriamente fue " + CurrentAttack.attackName);
+                Console.WriteLine("Daño " + CurrentAttack.attackDamage);
+                Console.WriteLine("Bloqueo "+ CurrentAttack.attackBlock);
+                Console.WriteLine("ID " + CurrentAttack.attackID);
+
+
+            }
+            else if(CurrentEnemy.enemyID == 1)
+            {
+                EnemyAttackData CurrentAttack = AtaquesElemental[ataqueSeleccionado];
+                for(int i = 0; i < AtaquesElemental.Count; i++)
+                {
+                    Console.WriteLine("Nombre del Ataque " + AtaquesElemental[i].attackName);
+                    Console.WriteLine("Daño del ataque " + AtaquesElemental[i].attackDamage);
+                    Console.WriteLine("Bloqueo del Ataque " + AtaquesElemental[i].attackBlock);
+                    Console.WriteLine("ID del Ataque " + AtaquesElemental[i].attackID);
+                    Console.WriteLine("");
+                }
+                Console.WriteLine("");
+                Console.WriteLine("el ataque seleccionado aleatoriamente fue " + CurrentAttack.attackName);
+                Console.WriteLine("Daño " + CurrentAttack.attackDamage);
+                Console.WriteLine("Bloqueo "+ CurrentAttack.attackBlock);
+                Console.WriteLine("ID " + CurrentAttack.attackID);
+            }
+            Console.WriteLine("");
+
+            Console.ReadKey();
+            */
+
+
+            
         }
 
         static void Start()
