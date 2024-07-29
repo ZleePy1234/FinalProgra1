@@ -1,9 +1,8 @@
 ﻿using System.Security.AccessControl;
 using static Enemigos.CreacionEnemigos;
-using Loot;
-using Cuartos;
-using PlayerClass;
-using Enemigos;
+using static Loot.CreacionLoot;
+using static Cuartos.CreacionCuartos;
+using static PlayerClass.CreacionPlayer;
 using System.Security.Cryptography.X509Certificates;
 
 namespace EjercicioComentarios
@@ -74,6 +73,7 @@ namespace EjercicioComentarios
             Console.ReadKey();
             */
 
+            
 
             
         }
@@ -109,6 +109,11 @@ namespace EjercicioComentarios
 
             //despues de llamar generacionPiso carga el menu de seleccion del jugador
         }
+
+        static void DeclaracionVariablesExploracion()
+        {
+            ListaCuartos();
+            
 
         static void MenuSeleccionGameplay()
         {
