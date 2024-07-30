@@ -1,16 +1,32 @@
-﻿using System.Security.AccessControl;
-using static Enemigos.CreacionEnemigos;
+﻿using static Enemigos.CreacionEnemigos;
 using static Loot.CreacionLoot;
 using static Cuartos.CreacionCuartos;
 using static PlayerClass.CreacionPlayer;
-using System.Security.Cryptography.X509Certificates;
 
 namespace EjercicioComentarios
 {
     public class EjercicioComments
     {
         //aqui declararemos las variables necesarias para la ejecucion del juego y los aspectos y sistemas que tengamos
-        
+        #region Vars RNG
+        public static int rndCuarto;
+        public static int rndEnemigo;
+        public static int rndLoot;
+        public static int numCuartos;
+
+        public static bool noItem = false;
+        public static bool noEnemy = false;
+
+        public static string cuartoActual;
+        public static LootData LootActual = new LootData("placeholder", 0, 0);
+
+        public static EnemyAttackData EnemigoActualAtaque1 = new EnemyAttackData("placeholder", 0, 0, 0);
+        public static EnemyAttackData EnemigoActualAtaque2 = new EnemyAttackData("placeholder", 0, 0, 0);
+        public static EnemyAttackData EnemigoActualAtaque3 = new EnemyAttackData("placeholder", 0, 0, 0);
+        public static EnemyAttackData EnemigoActualAtaqueSeleccionado = new EnemyAttackData("placeholder", 0, 0, 0);
+
+        public static EnemyData EnemigoActual = new EnemyData("placeholder", 0, 0, 0,EnemigoActualAtaque1, EnemigoActualAtaque2, EnemigoActualAtaque3);
+        #endregion
 
 
         static void Main(string[] args)
@@ -100,6 +116,8 @@ namespace EjercicioComentarios
 
         static void InicioPartida()
         {
+            DeclaracionVariablesExploracion();
+
             //se llama GameplayLoop
         }
 
@@ -113,7 +131,9 @@ namespace EjercicioComentarios
         static void DeclaracionVariablesExploracion()
         {
             ListaCuartos();
-            
+            ListaEnemigosAtaques();
+            ListaLoot();
+        }
 
         static void MenuSeleccionGameplay()
         {
@@ -152,13 +172,35 @@ namespace EjercicioComentarios
 
         static void GeneracionPiso()
         {
-            // esto va generar primero un numero aleatorio entre 5 y 8
-
-            // despues de esto va generar cada cuarto aleatoriamente con los siguientes parametros pudiendo ser entre un si o un no
-            // Primero generara si hay algun enemigo en el cuarto
-            // de ser el caso escoge un enemigo aleatoriamente
-            // despues de eso genera si hay algun tesoro o tipo de loot en el cuarto
+            Random rndCantidadCuartos = new Random();
+            numCuartos = rndCantidadCuartos.Next(5,9);
         }
-        
+
+        static void GeneracionCuartoActual()
+        {
+            noItem = false;
+            noEnemy = false;
+            Random rnd = new Random();
+            rndCuarto = rnd.Next(0, 13);
+            cuartoActual = CuartosList[rndCuarto];
+            rndEnemigo = rnd.Next(0, 2);
+            EnemigoActual.enemyName = ListaEnemigos[rndEnemigo].enemyName;
+            EnemigoActual.enemyHealth = ListaEnemigos[rndEnemigo].enemyHealth;
+            EnemigoActual.enemyID = ListaEnemigos[rndEnemigo].enemyID;
+            EnemigoActual.Attack1 = ListaEnemigos[rndEnemigo].Attack1;
+            EnemigoActual.Attack2 = ListaEnemigos[rndEnemigo].Attack2;
+            EnemigoActual.Attack3 = ListaEnemigos[rndEnemigo].Attack3;
+            rndLoot = rnd.Next(0, 6);
+            LootActual.lootName = ItemsLoot[rndLoot].lootName;
+            LootActual.lootValue = ItemsLoot[rndLoot].lootValue;
+            LootActual.lootID = ItemsLoot[rndLoot].lootID;
+
+            /*
+            Console.WriteLine("noItem " + noItem);
+            Console.WriteLine("noEnemy " + noEnemy);
+            Console.WriteLine("Cuarto Actual " + cuartoActual);
+            Console.WriteLine("");
+            */
+        }
     }
 }
