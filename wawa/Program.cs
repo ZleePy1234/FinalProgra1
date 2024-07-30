@@ -14,10 +14,12 @@ namespace EjercicioComentarios
         public static int rndLoot;
         public static int numCuartos;
 
+        public static int rndInt;
+
         public static bool noItem = false;
         public static bool noEnemy = false;
 
-        public static string cuartoActual;
+        public static string cuartoActual = "placeholder";
         public static LootData LootActual = new LootData("placeholder", 0, 0);
 
         public static EnemyAttackData EnemigoActualAtaque1 = new EnemyAttackData("placeholder", 0, 0, 0);
@@ -27,10 +29,19 @@ namespace EjercicioComentarios
 
         public static EnemyData EnemigoActual = new EnemyData("placeholder", 0, 0, 0,EnemigoActualAtaque1, EnemigoActualAtaque2, EnemigoActualAtaque3);
         #endregion
+        #region Vars Player
+        public static int seleccionPlayerClass;
 
+        static PlayerAttack playerAttack1 = new PlayerAttack("placeholder", 0,0,false);
+        static PlayerAttack playerAttack2 = new PlayerAttack("placeholder", 0,0,false);
+        static PlayerAttack playerAttack3 = new PlayerAttack("placeholder", 0,0,false);
+        static PlayerData DatosJugador = new PlayerData("placeholder", 0, 0, playerAttack1, playerAttack2, playerAttack3);
+
+        #endregion
 
         static void Main(string[] args)
         {
+            Console.Clear();
             /* DEBUG PARA VER SI FUNCIONA SELECCION ALEATORIA
             Console.Clear();
             ListaEnemigosAtaques();
@@ -88,8 +99,8 @@ namespace EjercicioComentarios
 
             Console.ReadKey();
             */
-
-            
+            MenuPrincipal();
+            InicioPartida();
 
             
         }
@@ -103,20 +114,64 @@ namespace EjercicioComentarios
 
         static void MenuPrincipal()
         {
+            MenuSeleccionPersonaje();
              // aqui es  donde el jugador podra elegir que hacer, si jugar o salir de la aplicacion, si decide jugar sera llevado a la creacion de personaje
         }
 
         static void MenuSeleccionPersonaje()
+
         {
             //Aqui es donde el jugador escogera su clase y su nombre para su personaje, despues de esto se le preguntara si asi esta bien o si desea cambiar alguna
             //parte del personaje
             
             //despues de que confirme que todo esta bien, se pasara a asignar las stats de la clase que selecciono y empieza la partida
+            Console.WriteLine("Escoge tu personaje 1 warlock 2 mago 3 clerigo");
+            seleccionPlayerClass = Convert.ToInt32(Console.ReadLine());
+            if (seleccionPlayerClass == 1)
+            {  
+                DatosJugador.playerName = WarlockData.playerName;
+                DatosJugador.playerHP = WarlockData.playerHP;
+                DatosJugador.playerPoints = WarlockData.playerPoints;
+                DatosJugador.playerAttack = WarlockData.playerAttack;
+                DatosJugador.playerSpell = WarlockData.playerSpell;
+                DatosJugador.playerBlock = WarlockData.playerBlock;
+            }
+            else if (seleccionPlayerClass == 2)
+            {
+                DatosJugador.playerName = MagoData.playerName;
+                DatosJugador.playerHP = MagoData.playerHP;
+                DatosJugador.playerPoints = MagoData.playerPoints;
+                DatosJugador.playerAttack = MagoData.playerAttack;
+                DatosJugador.playerSpell = MagoData.playerSpell;
+                DatosJugador.playerBlock = MagoData.playerBlock;
+            }
+            else if(seleccionPlayerClass == 3)
+            {
+                DatosJugador.playerName = PaladinData.playerName;
+                DatosJugador.playerHP = PaladinData.playerHP;
+                DatosJugador.playerPoints = PaladinData.playerPoints;
+                DatosJugador.playerAttack = PaladinData.playerAttack;
+                DatosJugador.playerSpell = PaladinData.playerSpell;
+                DatosJugador.playerBlock = PaladinData.playerBlock;
+            }
+            else
+            {
+                Console.WriteLine("Seleccion no valida, escogiendo una clase por defecto");
+                DatosJugador.playerName = WarlockData.playerName;
+                DatosJugador.playerHP = WarlockData.playerHP;
+                DatosJugador.playerPoints = WarlockData.playerPoints;
+                DatosJugador.playerAttack = WarlockData.playerAttack;
+                DatosJugador.playerSpell = WarlockData.playerSpell;
+                DatosJugador.playerBlock = WarlockData.playerBlock;
+            }
         }
 
         static void InicioPartida()
         {
             DeclaracionVariablesExploracion();
+            MenuSeleccionPersonaje();
+            GameplayLoop();
+
 
             //se llama GameplayLoop
         }
@@ -126,6 +181,8 @@ namespace EjercicioComentarios
             //aqui invocare el metodo que generara aleatoriamente el primer piso de la mazmorra
 
             //despues de llamar generacionPiso carga el menu de seleccion del jugador
+            GeneracionCuartoActual();
+            MenuSeleccionGameplay();
         }
 
         static void DeclaracionVariablesExploracion()
@@ -134,6 +191,7 @@ namespace EjercicioComentarios
             ListaEnemigosAtaques();
             ListaLoot();
         }
+
 
         static void MenuSeleccionGameplay()
         {
@@ -146,6 +204,33 @@ namespace EjercicioComentarios
             // si selecciona avanzar se mueve al siguiente cuarto y el medidor de antorcha se baja un punto
             //si su antorcha esta en 0 y intenta avanzar es un game over
             // si el siguiente cuarto es el cuarto del jefe, en vez de llamar el proximo cuarto llama la funcion de bossfight
+            Console.WriteLine(@$"{DatosJugador.playerName}, al avanzar has llegado a {cuartoActual}");
+            if (noItem == true)
+            {
+                if (noEnemy == true)
+                {
+                    Console.WriteLine("Encuentras el cuarto totalmente vacio.... Sin nadie ni nada de importancia.");
+                }
+                else if (noEnemy == false)
+                {
+                    Console.WriteLine($"Encuentras el cuarto sin nada de valor, pero encuentras un {EnemigoActual.enemyName}");
+                }
+            }
+            else if (noItem == false)
+            {
+                if(noEnemy == false)
+                {
+                    Console.WriteLine($"Encuentras algo que se ve valioso, es {LootActual.lootName}");
+                    Console.WriteLine($"Pero no es todo lo que vez, tambien vez en el cuarto un {EnemigoActual.enemyName}");
+                }
+                else if (noEnemy == true)
+                {
+                    Console.WriteLine($"No vez señales de nadie mas en el cuarto, y encuentras {LootActual.lootName}");
+                }
+            }
+
+            Console.ReadKey();
+            
         }
 
         static void Combate()
@@ -172,8 +257,7 @@ namespace EjercicioComentarios
 
         static void GeneracionPiso()
         {
-            Random rndCantidadCuartos = new Random();
-            numCuartos = rndCantidadCuartos.Next(5,9);
+
         }
 
         static void GeneracionCuartoActual()
@@ -183,17 +267,35 @@ namespace EjercicioComentarios
             Random rnd = new Random();
             rndCuarto = rnd.Next(0, 13);
             cuartoActual = CuartosList[rndCuarto];
-            rndEnemigo = rnd.Next(0, 2);
-            EnemigoActual.enemyName = ListaEnemigos[rndEnemigo].enemyName;
-            EnemigoActual.enemyHealth = ListaEnemigos[rndEnemigo].enemyHealth;
-            EnemigoActual.enemyID = ListaEnemigos[rndEnemigo].enemyID;
-            EnemigoActual.Attack1 = ListaEnemigos[rndEnemigo].Attack1;
-            EnemigoActual.Attack2 = ListaEnemigos[rndEnemigo].Attack2;
-            EnemigoActual.Attack3 = ListaEnemigos[rndEnemigo].Attack3;
-            rndLoot = rnd.Next(0, 6);
-            LootActual.lootName = ItemsLoot[rndLoot].lootName;
-            LootActual.lootValue = ItemsLoot[rndLoot].lootValue;
-            LootActual.lootID = ItemsLoot[rndLoot].lootID;
+            rndInt = rnd.Next(0, 2);
+            if (rndInt == 0)
+            {
+                noEnemy = true;
+            }
+            else if (rndInt == 1)
+            {
+                noEnemy = false;
+                rndEnemigo = rnd.Next(0, 2);
+                EnemigoActual.enemyName = ListaEnemigos[rndEnemigo].enemyName;
+                EnemigoActual.enemyHealth = ListaEnemigos[rndEnemigo].enemyHealth;
+                EnemigoActual.enemyID = ListaEnemigos[rndEnemigo].enemyID;
+                EnemigoActual.Attack1 = ListaEnemigos[rndEnemigo].Attack1;
+                EnemigoActual.Attack2 = ListaEnemigos[rndEnemigo].Attack2;
+                EnemigoActual.Attack3 = ListaEnemigos[rndEnemigo].Attack3;
+            }
+            rndInt = rnd.Next(0, 2);
+            if(rndInt == 0)
+            {
+                noItem = true;
+            }
+            else if(rndInt == 1)
+            {
+                noItem = false;
+                rndLoot = rnd.Next(0, 6);
+                LootActual.lootName = ItemsLoot[rndLoot].lootName;
+                LootActual.lootValue = ItemsLoot[rndLoot].lootValue;
+                LootActual.lootID = ItemsLoot[rndLoot].lootID;
+            }
 
             /*
             Console.WriteLine("noItem " + noItem);
