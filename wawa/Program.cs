@@ -1,12 +1,15 @@
-﻿using static Enemigos.CreacionEnemigos;
+﻿#pragma warning disable CA1416 // Validate platform compatibility
+using static Enemigos.CreacionEnemigos;
 using static Loot.CreacionLoot;
 using static Cuartos.CreacionCuartos;
 using static PlayerClass.CreacionPlayer;
+using System.Media;
 
 namespace EjercicioComentarios
 {
     public class EjercicioComments
     {
+        public static SoundPlayer battleMusic = new SoundPlayer();
         //aqui declararemos las variables necesarias para la ejecucion del juego y los aspectos y sistemas que tengamos
         #region Vars RNG
         public static int rndCuarto;
@@ -25,6 +28,7 @@ namespace EjercicioComentarios
         public static EnemyAttackData EnemigoActualAtaque1 = new EnemyAttackData("placeholder", 0, 0, 0);
         public static EnemyAttackData EnemigoActualAtaque2 = new EnemyAttackData("placeholder", 0, 0, 0);
         public static EnemyAttackData EnemigoActualAtaque3 = new EnemyAttackData("placeholder", 0, 0, 0);
+        public static EnemyAttackData chosenEnemyAttack = new EnemyAttackData("placeholder", 0, 0, 0);
         public static EnemyAttackData EnemigoActualAtaqueSeleccionado = new EnemyAttackData("placeholder", 0, 0, 0);
 
         public static EnemyData EnemigoActual = new EnemyData("placeholder", 0, 0, 0,EnemigoActualAtaque1, EnemigoActualAtaque2, EnemigoActualAtaque3);
@@ -35,12 +39,20 @@ namespace EjercicioComentarios
         static PlayerAttack playerAttack1 = new PlayerAttack("placeholder", 0,0,false);
         static PlayerAttack playerAttack2 = new PlayerAttack("placeholder", 0,0,false);
         static PlayerAttack playerAttack3 = new PlayerAttack("placeholder", 0,0,false);
+        static PlayerAttack chosenPlayerAttack = new PlayerAttack("placeholder", 0,0,false);
         static PlayerData DatosJugador = new PlayerData("placeholder", 0, 0, playerAttack1, playerAttack2, playerAttack3);
 
         #endregion
+        static void PlayBattleMusic()
+        {
+
+            battleMusic.SoundLocation = @"C:\Users\Eslepo\Desktop\FinalProgra1\wawa\BattleMusicUncut.wav";
+
+        }
 
         static void Main(string[] args)
         {
+            PlayBattleMusic();
             Console.Clear();
             /* DEBUG PARA VER SI FUNCIONA SELECCION ALEATORIA
             Console.Clear();
@@ -228,13 +240,103 @@ namespace EjercicioComentarios
                     Console.WriteLine($"No vez señales de nadie mas en el cuarto, y encuentras {LootActual.lootName}");
                 }
             }
-
             Console.ReadKey();
-            
+            Combate();
         }
 
         static void Combate()
         {
+            Console.Clear();
+            battleMusic.PlayLooping();
+
+            Random rndEnemyAttack = new Random();
+            do
+            {
+                Console.WriteLine(@$"Te enfrentas a un {EnemigoActual.enemyName} , Que haces?");
+                Console.WriteLine("");
+                Console.WriteLine(@$"1.- {DatosJugador.playerAttack.name}");
+                Console.WriteLine(@$"2.- {DatosJugador.playerSpell.name}");
+                Console.WriteLine(@$"3.- {DatosJugador.playerBlock.name}");
+                int attackSelect;
+                attackSelect = Convert.ToInt32(Console.ReadLine());
+                #region Asignacion Vars Ataque Player
+                if(attackSelect == 1)
+                {
+                    chosenPlayerAttack.name = DatosJugador.playerAttack.name;
+                    chosenPlayerAttack.damage = DatosJugador.playerAttack.damage;
+                    chosenPlayerAttack.block = DatosJugador.playerAttack.block;
+                    chosenPlayerAttack.isRanged = DatosJugador.playerAttack.isRanged;
+                }
+                else if (attackSelect == 2)
+                {
+                    chosenPlayerAttack.name = DatosJugador.playerSpell.name;
+                    chosenPlayerAttack.damage = DatosJugador.playerSpell.damage;
+                    chosenPlayerAttack.block = DatosJugador.playerSpell.block;
+                    chosenPlayerAttack.isRanged = DatosJugador.playerSpell.isRanged;
+                }
+                else
+                {
+                    chosenPlayerAttack.name = DatosJugador.playerBlock.name;
+                    chosenPlayerAttack.damage = DatosJugador.playerBlock.damage;
+                    chosenPlayerAttack.block = DatosJugador.playerBlock.block;
+                    chosenPlayerAttack.isRanged = DatosJugador.playerBlock.isRanged;
+                }
+                #endregion
+
+                #region Asignacion Vars Ataque Enemigo
+                int enemySelect = rndEnemyAttack.Next(0, 3);
+                if(enemySelect == 0)
+                {
+                    chosenEnemyAttack.attackName = EnemigoActual.Attack1.attackName;
+                    chosenEnemyAttack.attackDamage = EnemigoActual.Attack1.attackDamage;
+                    chosenEnemyAttack.attackBlock = EnemigoActual.Attack1.attackBlock;
+                    chosenEnemyAttack.attackID = EnemigoActual.Attack1.attackID;
+                }
+                else if(enemySelect == 1)
+                {
+                    chosenEnemyAttack.attackName = EnemigoActual.Attack2.attackName;
+                    chosenEnemyAttack.attackDamage = EnemigoActual.Attack2.attackDamage;
+                    chosenEnemyAttack.attackBlock = EnemigoActual.Attack2.attackBlock;
+                    chosenEnemyAttack.attackID = EnemigoActual.Attack2.attackID;
+                }
+                else
+                {
+                    chosenEnemyAttack.attackName = EnemigoActual.Attack3.attackName;
+                    chosenEnemyAttack.attackDamage = EnemigoActual.Attack3.attackDamage;
+                    chosenEnemyAttack.attackBlock = EnemigoActual.Attack3.attackBlock;
+                    chosenEnemyAttack.attackID = EnemigoActual.Attack3.attackID;
+                }
+
+
+                #endregion
+
+                Console.WriteLine(@$"El enemigo utilizo {chosenEnemyAttack.attackName}, haciendo {chosenEnemyAttack.attackDamage} puntos de daño!");
+                int enemyattackdamage = chosenEnemyAttack.attackDamage;
+                enemyattackdamage -= chosenPlayerAttack.block;
+                if(enemyattackdamage != chosenEnemyAttack.attackDamage )
+                {
+                    Console.WriteLine(@$"Tu accion selccionada bloqueo una parte del daño, ahora solo recibes {enemyattackdamage}");
+                }else
+                {}
+                Console.WriteLine(@"");
+                Console.WriteLine(@$"El Jugador uso {chosenPlayerAttack.name}, haciendo {chosenPlayerAttack.damage} puntos de daño!");
+                int playerattackdamage = chosenPlayerAttack.damage;
+                playerattackdamage -= chosenEnemyAttack.attackBlock;
+                if(playerattackdamage != chosenPlayerAttack.damage)
+                {
+                    Console.WriteLine(@$"El enemigo bloqueo tu ataque!, el daño de tu ataque fue reducido  a {playerattackdamage}");
+                }
+                else{}
+                Console.ReadKey();
+                
+
+
+                
+            }while(DatosJugador.playerHP > 0 || EnemigoActual.enemyHealth > 0);
+
+            battleMusic.Stop();
+
+
             // Aqui se empieza el combate, primero se checa en que cuarto esta el jugador
             //despues de eso se checa que tipo de enemigo esta ahi y se cargan sus estadisticas
             // al hacer esto empieza el combate, el enemigo escogera una accion, y luego el jugador escogera una
@@ -242,7 +344,7 @@ namespace EjercicioComentarios
             // se imprimira un poco de texto dando una pista de que clase de accion escogio el enemigo para ayudar un poco al jugador
             // esto se repetira hasta que los puntos de vida del enemigo o del jugador sean reducidos a 0
             //si el jugador gana, este puede elegir perder un nivel de antorcha por recuperar su vida al maximo
-            // despues de esto se carga de regreso el cuarto y el jugador vuelve al menu de eleccion
+            // despues de esto se carga de regreso el cuarto y el jugador vuelve al menu de eleccion 
         }
 
         static void Looteo()
@@ -306,3 +408,4 @@ namespace EjercicioComentarios
         }
     }
 }
+#pragma warning restore CA1416 // Validate platform compatibility
