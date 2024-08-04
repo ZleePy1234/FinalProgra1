@@ -1,5 +1,6 @@
 using System.Diagnostics.Contracts;
 using System.Security.AccessControl;
+using NAudio.Wave;
 
 namespace Enemigos
 {

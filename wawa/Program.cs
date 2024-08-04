@@ -1,16 +1,27 @@
 ﻿#pragma warning disable CA1416 // Validate platform compatibility
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 using static Enemigos.CreacionEnemigos;
 using static Loot.CreacionLoot;
 using static Cuartos.CreacionCuartos;
 using static PlayerClass.CreacionPlayer;
+using static Art.ArtASCII;
 using System.Media;
+using NAudio.Wave;
+
 
 namespace EjercicioComentarios
 {
     public class EjercicioComments
     {
         public static SoundPlayer battleMusic = new SoundPlayer();
-        //aqui declararemos las variables necesarias para la ejecucion del juego y los aspectos y sistemas que tengamos
+        public static SoundPlayer gameplayMenuMusic = new SoundPlayer();
+        public static SoundPlayer bossMusic = new SoundPlayer();
+
+
+        public static string asciiEnemy;
+
+                              //aqui declararemos las variables necesarias para la ejecucion del juego y los aspectos y sistemas que tengamos
         #region Vars RNG
         public static int rndCuarto;
         public static int rndEnemigo;
@@ -47,7 +58,8 @@ namespace EjercicioComentarios
         {
 
             battleMusic.SoundLocation = @"C:\Users\Eslepo\Desktop\FinalProgra1\wawa\BattleMusicUncut.wav";
-
+            bossMusic.SoundLocation = @"C:\Users\Eslepo\Desktop\FinalProgra1\wawa\BossBattleMusic.wav";
+            gameplayMenuMusic.SoundLocation = @"C:\Users\Eslepo\Desktop\FinalProgra1\wawa\GameplayMusic.wav";
         }
 
         static void Main(string[] args)
@@ -112,7 +124,7 @@ namespace EjercicioComentarios
             Console.ReadKey();
             */
             MenuPrincipal();
-            InicioPartida();
+            
 
             
         }
@@ -126,6 +138,7 @@ namespace EjercicioComentarios
 
         static void MenuPrincipal()
         {
+            Console.Clear();
             MenuSeleccionPersonaje();
              // aqui es  donde el jugador podra elegir que hacer, si jugar o salir de la aplicacion, si decide jugar sera llevado a la creacion de personaje
         }
@@ -135,10 +148,17 @@ namespace EjercicioComentarios
         {
             //Aqui es donde el jugador escogera su clase y su nombre para su personaje, despues de esto se le preguntara si asi esta bien o si desea cambiar alguna
             //parte del personaje
-            
+            Console.WriteLine("Juego chafa (super pre alpha)");
+            Console.WriteLine("picale a lo q sea pa empezar");
+            Console.ReadKey();
+            Console.Clear();
             //despues de que confirme que todo esta bien, se pasara a asignar las stats de la clase que selecciono y empieza la partida
-            Console.WriteLine("Escoge tu personaje 1 warlock 2 mago 3 clerigo");
-            seleccionPlayerClass = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Escoge tu personaje 1 warlock 2 mago 3 paladin");
+
+            string textoplayer;
+            textoplayer = Console.ReadLine();
+
+            seleccionPlayerClass  = Convert.ToInt32(textoplayer);
             if (seleccionPlayerClass == 1)
             {  
                 DatosJugador.playerName = WarlockData.playerName;
@@ -176,12 +196,13 @@ namespace EjercicioComentarios
                 DatosJugador.playerSpell = WarlockData.playerSpell;
                 DatosJugador.playerBlock = WarlockData.playerBlock;
             }
+            InicioPartida();
         }
 
         static void InicioPartida()
         {
+            Console.Clear();
             DeclaracionVariablesExploracion();
-            MenuSeleccionPersonaje();
             GameplayLoop();
 
 
@@ -232,7 +253,7 @@ namespace EjercicioComentarios
             {
                 if(noEnemy == false)
                 {
-                    Console.WriteLine($"Encuentras algo que se ve valioso, es {LootActual.lootName}");
+                    Console.WriteLine($"Encuentras algo que podrias lootear, es {LootActual.lootName}");
                     Console.WriteLine($"Pero no es todo lo que vez, tambien vez en el cuarto un {EnemigoActual.enemyName}");
                 }
                 else if (noEnemy == true)
@@ -247,16 +268,29 @@ namespace EjercicioComentarios
         static void Combate()
         {
             Console.Clear();
+            bool isFighting = true;
             battleMusic.PlayLooping();
 
             Random rndEnemyAttack = new Random();
             do
-            {
+            {Console.Clear();
                 Console.WriteLine(@$"Te enfrentas a un {EnemigoActual.enemyName} , Que haces?");
                 Console.WriteLine("");
                 Console.WriteLine(@$"1.- {DatosJugador.playerAttack.name}");
                 Console.WriteLine(@$"2.- {DatosJugador.playerSpell.name}");
                 Console.WriteLine(@$"3.- {DatosJugador.playerBlock.name}");
+                Console.WriteLine("");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.BackgroundColor = ConsoleColor.DarkGreen;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(@$"HP Player: {DatosJugador.playerHP} ");
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.Write(@$"|| ");
+                Console.BackgroundColor = ConsoleColor.DarkRed;
+                Console.Write(@$"HP enemigo: {EnemigoActual.enemyHealth}");
+                Console.WriteLine("");
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.BackgroundColor = ConsoleColor.Black;
                 int attackSelect;
                 attackSelect = Convert.ToInt32(Console.ReadLine());
                 #region Asignacion Vars Ataque Player
@@ -313,6 +347,11 @@ namespace EjercicioComentarios
                 Console.WriteLine(@$"El enemigo utilizo {chosenEnemyAttack.attackName}, haciendo {chosenEnemyAttack.attackDamage} puntos de daño!");
                 int enemyattackdamage = chosenEnemyAttack.attackDamage;
                 enemyattackdamage -= chosenPlayerAttack.block;
+                if (enemyattackdamage < 0)
+                {
+                    enemyattackdamage = 0;
+                }
+                else{}
                 if(enemyattackdamage != chosenEnemyAttack.attackDamage )
                 {
                     Console.WriteLine(@$"Tu accion selccionada bloqueo una parte del daño, ahora solo recibes {enemyattackdamage}");
@@ -322,18 +361,72 @@ namespace EjercicioComentarios
                 Console.WriteLine(@$"El Jugador uso {chosenPlayerAttack.name}, haciendo {chosenPlayerAttack.damage} puntos de daño!");
                 int playerattackdamage = chosenPlayerAttack.damage;
                 playerattackdamage -= chosenEnemyAttack.attackBlock;
+                if (playerattackdamage < 0)
+                {
+                    playerattackdamage = 0;
+                }
+                else{}
                 if(playerattackdamage != chosenPlayerAttack.damage)
                 {
                     Console.WriteLine(@$"El enemigo bloqueo tu ataque!, el daño de tu ataque fue reducido  a {playerattackdamage}");
                 }
                 else{}
-                Console.ReadKey();
+                DatosJugador.playerHP -= enemyattackdamage;
+                Thread.Sleep(2250);
+                if(playerattackdamage > 0)
+                {
+                    if(EnemigoActual.enemyID == 0)
+                    {
+                        ASCIIesqueleto();
+                    }
+                    else if (EnemigoActual.enemyID == 1)
+                    {
+                        ASCIIelemental();
+                    }
+                }
+                else{}
+                if(DatosJugador.playerHP <= 0)
+                {
+                    Console.WriteLine("Fuiste Vencido!");
+                }
+                else
+                {
+                    EnemigoActual.enemyHealth -= playerattackdamage;
+                }
+                if(DatosJugador.playerHP <= 0)
+                {
+                    isFighting = false;
+                }
+                else if (EnemigoActual.enemyHealth <= 0)
+                {
+                    isFighting = false;
+                }
+                else {}
+
                 
 
 
                 
-            }while(DatosJugador.playerHP > 0 || EnemigoActual.enemyHealth > 0);
+            }while(isFighting == true);
 
+            if(DatosJugador.playerHP <= 0)
+            {
+                Console.WriteLine($"Fuiste Vencido por el {EnemigoActual.enemyName}");
+            }
+            else
+            {
+                if(EnemigoActual.enemyID == 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    EsqueletoDeath();
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                }
+                else if (EnemigoActual.enemyID == 1)
+                {
+
+                }
+            }
+            Console.ReadKey();
             battleMusic.Stop();
 
 
@@ -370,14 +463,18 @@ namespace EjercicioComentarios
             rndCuarto = rnd.Next(0, 13);
             cuartoActual = CuartosList[rndCuarto];
             rndInt = rnd.Next(0, 2);
+            //DEBUG PARA TENER ESQUELETO
+            rndInt = 1;
             if (rndInt == 0)
             {
                 noEnemy = true;
             }
-            else if (rndInt == 1)
+            else if (rndInt == 1)   
             {
                 noEnemy = false;
                 rndEnemigo = rnd.Next(0, 2);
+                //debug para esqueleto
+                rndEnemigo = 0;
                 EnemigoActual.enemyName = ListaEnemigos[rndEnemigo].enemyName;
                 EnemigoActual.enemyHealth = ListaEnemigos[rndEnemigo].enemyHealth;
                 EnemigoActual.enemyID = ListaEnemigos[rndEnemigo].enemyID;
@@ -409,3 +506,5 @@ namespace EjercicioComentarios
     }
 }
 #pragma warning restore CA1416 // Validate platform compatibility
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
