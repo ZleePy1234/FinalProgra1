@@ -21,7 +21,7 @@ namespace EjercicioComentarios
 
         public static string asciiEnemy;
 
-                              //aqui declararemos las variables necesarias para la ejecucion del juego y los aspectos y sistemas que tengamos
+        //aqui declararemos las variables necesarias para la ejecucion del juego y los aspectos y sistemas que tengamos
         #region Vars RNG
         public static int rndCuarto;
         public static int rndEnemigo;
@@ -54,6 +54,17 @@ namespace EjercicioComentarios
         static PlayerData DatosJugador = new PlayerData("placeholder", 0, 0, playerAttack1, playerAttack2, playerAttack3);
 
         #endregion
+
+        #region  Inv
+
+        public static List<LootData> ItemInventory = new List<LootData>();
+        public static bool isRoomLooted = false;
+        public static bool isRoomEnemyDefeated = false;
+
+        public static int selectmenu;
+
+        #endregion
+
         static void PlayBattleMusic()
         {
 
@@ -139,6 +150,31 @@ namespace EjercicioComentarios
         static void MenuPrincipal()
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine(@$" .--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--. 
+/ .. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \
+\ \/\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ \/ /
+ \/ /`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'\/ / 
+ / /\                                                                                / /\ 
+/ /\ \    ______    __    __    __      _   _____    _____  ____      __      _     / /\ \
+\ \/ /   (_  __ \   ) )  ( (   /  \    / ) / ___ \  / ___/ / __ \    /  \    / )    \ \/ /
+ \/ /      ) ) \ \ ( (    ) ) / /\ \  / / / /   \_)( (__  / /  \ \  / /\ \  / /      \/ / 
+ / /\     ( (   ) ) ) )  ( (  ) ) ) ) ) )( (  ____  ) __)( ()  () ) ) ) ) ) ) )      / /\ 
+/ /\ \     ) )  ) )( (    ) )( ( ( ( ( ( ( ( (__  )( (   ( ()  () )( ( ( ( ( (      / /\ \
+\ \/ /    / /__/ /  ) \__/ ( / /  \ \/ /  \ \__/ /  \ \___\ \__/ / / /  \ \/ /      \ \/ /
+ \/ /    (______/   \______/(_/    \__/    \____/    \____\\____/ (_/    \__/        \/ / 
+ / /\     _____       ____      ____  ________  _____ ______    _____ _______        / /\ 
+/ /\ \   (_   _)     / __ \    / __ \(___  ___)/ ___/(   __ \  / ____\\     /       / /\ \
+\ \/ /     | |      / /  \ \  / /  \ \   ) )  ( (__   ) (__) )( (___   \   /        \ \/ /
+ \/ /      | |     ( ()  () )( ()  () ) ( (    ) __) (    __/  \___ \   ) (          \/ / 
+ / /\      | |   __( ()  () )( ()  () )  ) )  ( (     ) \ \  _     ) )  \_/          / /\ 
+/ /\ \   __| |___) )\ \__/ /  \ \__/ /  ( (    \ \___( ( \ \_))___/ /    _          / /\ \
+\ \/ /   \________/  \____/    \____/   /__\    \____\)_) \__//____/    (_)         \ \/ /
+ \/ /                                                                                \/ / 
+ / /\.--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--./ /\ 
+/ /\ \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \/\ \
+\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `' /
+ `--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--'`--' ");
             MenuSeleccionPersonaje();
              // aqui es  donde el jugador podra elegir que hacer, si jugar o salir de la aplicacion, si decide jugar sera llevado a la creacion de personaje
         }
@@ -148,13 +184,32 @@ namespace EjercicioComentarios
         {
             //Aqui es donde el jugador escogera su clase y su nombre para su personaje, despues de esto se le preguntara si asi esta bien o si desea cambiar alguna
             //parte del personaje
-            Console.WriteLine("Juego chafa (super pre alpha)");
+            Console.WriteLine("Dungeon Looters! (super pre alpha)");
             Console.WriteLine("picale a lo q sea pa empezar");
+            Console.ForegroundColor = ConsoleColor.Gray;
             Console.ReadKey();
             Console.Clear();
             //despues de que confirme que todo esta bien, se pasara a asignar las stats de la clase que selecciono y empieza la partida
-            Console.WriteLine("Escoge tu personaje 1 warlock 2 mago 3 paladin");
-
+            Console.WriteLine(@"                                                                                         
+                                       █     ░▓                      ▒████▓              
+                                       █   ███▒     ▓▓         ▓██████▒  ▒██████▓░       
+                 ▓▓████▓▒                ▓█████▓    ▓▓        ██▒   ░▓████▓░   ▒██       
+              ▒█▓   ░░░  ▒▓▓            ▒█████████            ██▒ █████  █████░░██       
+             ██  ▓█▓██▒▓█▓  ▒█░         ▒██▒  ▓███▒   ░       ▓██ ██        ██ ▒█▓       
+       ░█░  ░█░ ░█▒  ██  ▓█    ▓▓        ██▒   ██▓    ▓        ██ ▒████░ ████▓ ██░       
+          ▓▓  ▓█▓█████  ▓█                ░████▓               ▓██ ▓███  ████ ▓█▓        
+            ▒█▓░     ░▓█▒            █▓░         ▒██████░       ███ ▒██▒░██▓ ▓██         
+                ▒▓▓▓▓▒                 ███░ ▓███████████████     ▒██▒ ▒██▓ ░██▓          
+                                         ███████████████████       ▓███░░████            
+                                           ▓████████████████          ▓██▓               
+                                              ░░                                         ");
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.Write("             1.- Warlock");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Write("                   2.- Mago.               ");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.Write("3.Paladin");
+            Console.WriteLine("");
             string textoplayer;
             textoplayer = Console.ReadLine();
 
@@ -260,6 +315,27 @@ namespace EjercicioComentarios
                 {
                     Console.WriteLine($"No vez señales de nadie mas en el cuarto, y encuentras {LootActual.lootName}");
                 }
+            }
+            Console.WriteLine("");
+            Console.WriteLine("Que decides hacer?");
+            Console.WriteLine($"1.- Atacar al {EnemigoActual.enemyName}");
+            Console.WriteLine($"2.- Lootear {LootActual.lootName}");
+            Console.WriteLine("3.-Avanzar al siguiente cuarto");
+            selectmenu = Convert.ToInt32(Console.ReadLine());
+            switch (selectmenu)
+            {
+                case 1:
+                    Combate();
+                    break;
+                case 2:
+                    Looteo();
+                    break;
+                case 3:
+                    NextRoom();
+                    break;
+                default:
+                    Console.WriteLine("Escoge algo valido");
+                    break;
             }
             Console.ReadKey();
             Combate();
@@ -442,19 +518,19 @@ namespace EjercicioComentarios
 
         static void Looteo()
         {
-            // Aqui empieza la fase de looteo
-            //el jugador debe escoger un numero aleatorio entre 1 y 10
-            // el juego generara un numero aleatorio entre 1 y 10
-            // dependiendo de que tan lejos o cerca este del numero escogido por la computadora, el jugador recibira loot acorde
-            //mientras mas cerca mejor loot, como pociones de curacion o puntuacion extra
-            //mientras mas lejos peor loot, como algo envenenado que lo haga perder vida cada turno
+            ItemInventory.Add(LootActual);
+            Console.WriteLine(@$"Recoges {LootActual.lootName}, estimas que posiblemente valga unos {LootActual.lootValue}");
         }
 
         static void GeneracionPiso()
         {
 
         }
-
+        static void NextRoom()
+        {
+            Console.Clear();
+            Console.WriteLine(@"");
+        }
         static void GeneracionCuartoActual()
         {
             noItem = false;
