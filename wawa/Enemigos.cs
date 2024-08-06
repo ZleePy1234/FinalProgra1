@@ -54,7 +54,7 @@ namespace Enemigos
         public static EnemyAttackData Bonk = new EnemyAttackData("Bonk", 10, 0, 1);
         public static EnemyAttackData Empujon = new EnemyAttackData("Empujon", 5, 0, 2);
         public static EnemyAttackData Bloquear = new EnemyAttackData("Bloquear",0, 20, 3);
-        public static EnemyData Esqueleto = new EnemyData("Esqueleto", 50, 100, 0,Bonk,Empujon,Bloquear );
+        public static EnemyData Esqueleto = new EnemyData("Esqueleto", 50, 480, 0,Bonk,Empujon,Bloquear );
 
         #endregion
 
@@ -62,7 +62,7 @@ namespace Enemigos
         public static EnemyAttackData ProyectilAire = new EnemyAttackData("Proyectil de Aire",12, 0, 1);
         public static EnemyAttackData ProyectilRoca = new EnemyAttackData("Lanzamiento de Roca",26, 0, 2);
         public static EnemyAttackData FormaVapor = new EnemyAttackData("Forma de Vapor",0, 20, 3);
-        public static EnemyData Elemental = new EnemyData("Elemental",75, 250, 1, ProyectilAire, ProyectilRoca, FormaVapor);
+        public static EnemyData Elemental = new EnemyData("Elemental",75, 660, 1, ProyectilAire, ProyectilRoca, FormaVapor);
 
         #endregion
 
@@ -72,7 +72,7 @@ namespace Enemigos
         public static EnemyAttackData Eviscerar = new EnemyAttackData("Eviscerar",35, 0, 2);
         public static EnemyAttackData Escudo = new EnemyAttackData("Alzar Escudo",0, 35, 3);
 
-        public static EnemyData ArmaduraReanimada = new EnemyData("Armadura Reanimada",250, 1000, 1, GolpeEspada, Eviscerar, Escudo);
+        public static EnemyData ArmaduraReanimada = new EnemyData("Armadura Reanimada",250, 1100, 1, GolpeEspada, Eviscerar, Escudo);
         #endregion
 
         #region DatosAboleth JEFE

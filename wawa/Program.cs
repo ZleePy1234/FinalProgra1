@@ -189,6 +189,7 @@ namespace EjercicioComentarios
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.ReadKey();
             Console.Clear();
+            Console.WriteLine("Selecciona una clase");
             //despues de que confirme que todo esta bien, se pasara a asignar las stats de la clase que selecciono y empieza la partida
             Console.WriteLine(@"                                                                                         
                                        █     ░▓                      ▒████▓              
@@ -269,8 +270,17 @@ namespace EjercicioComentarios
             //aqui invocare el metodo que generara aleatoriamente el primer piso de la mazmorra
 
             //despues de llamar generacionPiso carga el menu de seleccion del jugador
-            GeneracionCuartoActual();
-            MenuSeleccionGameplay();
+            int i = 0;
+            int cantidadCuartos;
+            Random rnd = new Random();
+            cantidadCuartos = rnd.Next(4, 8);
+            do
+            {
+                GeneracionCuartoActual();
+                MenuSeleccionGameplay();
+                i++;
+            }while(i < cantidadCuartos);
+            
         }
 
         static void DeclaracionVariablesExploracion()
@@ -319,8 +329,11 @@ namespace EjercicioComentarios
             Console.WriteLine("");
             Console.WriteLine("Que decides hacer?");
             Console.WriteLine($"1.- Atacar al {EnemigoActual.enemyName}");
-            Console.WriteLine($"2.- Lootear {LootActual.lootName}");
-            Console.WriteLine("3.-Avanzar al siguiente cuarto");
+            Console.WriteLine("2.-Avanzar al siguiente cuarto");
+            if (noItem == false)
+            {
+                Console.WriteLine($"3.- Lootear {LootActual.lootName}");
+            }
             selectmenu = Convert.ToInt32(Console.ReadLine());
             switch (selectmenu)
             {
@@ -337,8 +350,6 @@ namespace EjercicioComentarios
                     Console.WriteLine("Escoge algo valido");
                     break;
             }
-            Console.ReadKey();
-            Combate();
         }
 
         static void Combate()
@@ -448,7 +459,7 @@ namespace EjercicioComentarios
                 }
                 else{}
                 DatosJugador.playerHP -= enemyattackdamage;
-                Thread.Sleep(2250);
+                Thread.Sleep(3000);
                 if(playerattackdamage > 0)
                 {
                     if(EnemigoActual.enemyID == 0)
@@ -503,6 +514,8 @@ namespace EjercicioComentarios
                 }
             }
             Console.ReadKey();
+            Thread.Sleep(1000);
+            Console.Clear();
             battleMusic.Stop();
 
 
@@ -520,6 +533,8 @@ namespace EjercicioComentarios
         {
             ItemInventory.Add(LootActual);
             Console.WriteLine(@$"Recoges {LootActual.lootName}, estimas que posiblemente valga unos {LootActual.lootValue}");
+            Thread.Sleep(2000);
+            Console.Clear();
         }
 
         static void GeneracionPiso()
