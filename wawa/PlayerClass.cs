@@ -70,7 +70,7 @@ namespace PlayerClass
         #region Mago
 
         public static PlayerAttack Bastonazo = new PlayerAttack("Bastonazo", 10,0, false);
-        public static PlayerAttack BolaFuego = new PlayerAttack("Bola de Fuego", 35,0,true);
+        public static PlayerAttack BolaFuego = new PlayerAttack("Bola de Fuego", 105,0,true);
         public static PlayerAttack BarreraMagica = new PlayerAttack("Barrera Magica", 0,15, false);
         public static PlayerData MagoData = new PlayerData("Mago",125, 0,Bastonazo, BolaFuego, BarreraMagica);
 

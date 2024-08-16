@@ -69,10 +69,10 @@ namespace Enemigos
         #region DatosArmaduraReanimada JEFE
 
         public static EnemyAttackData GolpeEspada = new EnemyAttackData("Corte",18, 0, 1);
-        public static EnemyAttackData Eviscerar = new EnemyAttackData("Eviscerar",35, 0, 2);
-        public static EnemyAttackData Escudo = new EnemyAttackData("Alzar Escudo",0, 35, 3);
+        public static EnemyAttackData Eviscerar = new EnemyAttackData("Explosion Abisal",35, 0, 2);
+        public static EnemyAttackData Escudo = new EnemyAttackData("Grito de tristeza",0, 0, 3);
 
-        public static EnemyData ArmaduraReanimada = new EnemyData("Armadura Reanimada",250, 1100, 1, GolpeEspada, Eviscerar, Escudo);
+        public static EnemyData ArmaduraReanimada = new EnemyData(" El Caballero Caido",250, 1100, 2, GolpeEspada, Eviscerar, Escudo);
         #endregion
 
         #region DatosAboleth JEFE
@@ -81,7 +81,7 @@ namespace Enemigos
         public static EnemyAttackData Acido = new EnemyAttackData("Drenado Psiquico",38, 0, 2);
         public static EnemyAttackData Moco = new EnemyAttackData("Moco Protectivo", 0, 33, 0);
 
-        public static EnemyData Aboleth = new EnemyData("Aboleth",325, 1350, 2, Mordida, Acido, Moco);
+        public static EnemyData Aboleth = new EnemyData("Aboleth",325, 1350, 3, Mordida, Acido, Moco);
         #endregion
         
         //Listas donde guardamos los enemigos, y listas con los ataques de cada uno

@@ -26,6 +26,7 @@ namespace EjercicioComentarios
         public static int rndCuarto;
         public static int rndEnemigo;
         public static int rndLoot;
+        public static int rndJefe;
         public static int numCuartos;
 
         public static int rndInt;
@@ -77,6 +78,7 @@ namespace EjercicioComentarios
         {
             PlayBattleMusic();
             Console.Clear();
+            #region Debug
             /* DEBUG PARA VER SI FUNCIONA SELECCION ALEATORIA
             Console.Clear();
             ListaEnemigosAtaques();
@@ -134,21 +136,17 @@ namespace EjercicioComentarios
 
             Console.ReadKey();
             */
+            #endregion
             MenuPrincipal();
             
 
             
         }
 
-        static void Start()
-        {
-            //Aqui llamaremos el menu principal del juego
-            
-            // este llamara un metodo con el menu
-        }
 
         static void MenuPrincipal()
         {
+
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.WriteLine(@$" .--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--..--. 
@@ -273,14 +271,48 @@ namespace EjercicioComentarios
             int i = 0;
             int cantidadCuartos;
             Random rnd = new Random();
-            cantidadCuartos = rnd.Next(4, 8);
+            cantidadCuartos = rnd.Next(2, 7);
+            Console.WriteLine($@"Eres un {DatosJugador.playerName} exiliado, para volver a ser aceptado en tu pueblo, debes adentrarte a la cripta.
+            
+Debes matar lo que sea que este ahi creando monstruos que estan aterrorizando a los campesinos.
+            
+Y claro... Saquear un poco de cosas para ti mismo, todos deben hacer dinero despues de todo...
+            
+Un viejo aventurero de menciono que esa cripta tiene {cantidadCuartos} cuartos.
+Lo que sea que este detras de todo esto debe estar despues de esos cuartos.
+            
+            
+Presiona Cualquier Boton para continuar.");
+
+            Console.ReadKey();
+            Console.Clear();
             do
             {
                 GeneracionCuartoActual();
                 MenuSeleccionGameplay();
                 i++;
             }while(i < cantidadCuartos);
-            
+            rndJefe = rnd.Next(0, 2);
+            rndJefe = 0;
+            EnemigoActual.enemyName = ListaJefes[rndJefe].enemyName;
+            EnemigoActual.enemyHealth = ListaJefes[rndJefe].enemyHealth;
+            EnemigoActual.enemyID = ListaJefes[rndJefe].enemyID;
+            EnemigoActual.Attack1 = ListaJefes[rndJefe].Attack1;
+            EnemigoActual.Attack2 = ListaJefes[rndJefe].Attack2;
+            EnemigoActual.Attack3 = ListaJefes[rndJefe].Attack3;
+            Combate();
+            Console.Clear();
+            Console.WriteLine(@"Despues de la derrota del enemigo, fuiste recibido de regreso en tu pueblo, y con riquezas...
+Saliste con:
+");
+            for(int iX=0;iX<ItemInventory.Count;iX++)
+            {
+                Console.WriteLine(ItemInventory[iX].lootName + ". Valor: "+ ItemInventory[iX].lootValue);
+            }
+            Console.WriteLine(@"");
+            Console.WriteLine(@"Presiona Cualquier Tecla para salir");
+            Console.ReadKey();
+            Environment.Exit(0);
         }
 
         static void DeclaracionVariablesExploracion()
@@ -328,7 +360,10 @@ namespace EjercicioComentarios
             }
             Console.WriteLine("");
             Console.WriteLine("Que decides hacer?");
-            Console.WriteLine($"1.- Atacar al {EnemigoActual.enemyName}");
+            if (noEnemy == false)
+            {
+                Console.WriteLine($"1.- Atacar al {EnemigoActual.enemyName}");
+            }
             Console.WriteLine("2.-Avanzar al siguiente cuarto");
             if (noItem == false)
             {
@@ -341,10 +376,10 @@ namespace EjercicioComentarios
                     Combate();
                     break;
                 case 2:
-                    Looteo();
+                    NextRoom();
                     break;
                 case 3:
-                    NextRoom();
+                    Looteo();
                     break;
                 default:
                     Console.WriteLine("Escoge algo valido");
@@ -356,7 +391,15 @@ namespace EjercicioComentarios
         {
             Console.Clear();
             bool isFighting = true;
-            battleMusic.PlayLooping();
+            if(EnemigoActual.enemyID == 2 || EnemigoActual.enemyID == 3)
+            {
+                bossMusic.PlayLooping();
+            }
+            else
+            {
+                battleMusic.PlayLooping();
+            }
+            
 
             Random rndEnemyAttack = new Random();
             do
@@ -470,6 +513,10 @@ namespace EjercicioComentarios
                     {
                         ASCIIelemental();
                     }
+                    else if (EnemigoActual.enemyID == 2)
+                    {
+                        ASCIICaballero();
+                    }
                 }
                 else{}
                 if(DatosJugador.playerHP <= 0)
@@ -499,6 +546,8 @@ namespace EjercicioComentarios
             if(DatosJugador.playerHP <= 0)
             {
                 Console.WriteLine($"Fuiste Vencido por el {EnemigoActual.enemyName}");
+                Thread.Sleep(2000);
+                Environment.Exit(0);
             }
             else
             {
@@ -510,13 +559,27 @@ namespace EjercicioComentarios
                 }
                 else if (EnemigoActual.enemyID == 1)
                 {
-
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    ElementalDeath();
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                }
+                else if (EnemigoActual.enemyID == 2)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    CaballeroDeath();
+                    Console.ForegroundColor = ConsoleColor.Gray;
                 }
             }
-            Console.ReadKey();
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             Console.Clear();
-            battleMusic.Stop();
+            if(EnemigoActual.enemyID == 3 || EnemigoActual.enemyID == 4)
+            {
+                bossMusic.Stop();
+            }
+            else
+            {
+                battleMusic.Stop();
+            }
 
 
             // Aqui se empieza el combate, primero se checa en que cuarto esta el jugador
@@ -537,10 +600,6 @@ namespace EjercicioComentarios
             Console.Clear();
         }
 
-        static void GeneracionPiso()
-        {
-
-        }
         static void NextRoom()
         {
             Console.Clear();
@@ -554,8 +613,6 @@ namespace EjercicioComentarios
             rndCuarto = rnd.Next(0, 13);
             cuartoActual = CuartosList[rndCuarto];
             rndInt = rnd.Next(0, 2);
-            //DEBUG PARA TENER ESQUELETO
-            rndInt = 1;
             if (rndInt == 0)
             {
                 noEnemy = true;
@@ -564,8 +621,6 @@ namespace EjercicioComentarios
             {
                 noEnemy = false;
                 rndEnemigo = rnd.Next(0, 2);
-                //debug para esqueleto
-                rndEnemigo = 0;
                 EnemigoActual.enemyName = ListaEnemigos[rndEnemigo].enemyName;
                 EnemigoActual.enemyHealth = ListaEnemigos[rndEnemigo].enemyHealth;
                 EnemigoActual.enemyID = ListaEnemigos[rndEnemigo].enemyID;
